@@ -1,7 +1,7 @@
 routes = [
   {
     path: '/',
-    componentUrl: './pages/login.html',
+    componentUrl: './pages/contratadores/homeC.html',
   },
   {
     path: '/home/',
@@ -36,6 +36,13 @@ routes = [
   {
     path: '/registroC/',
     componentUrl: './pages/contratadores/registroC.html',
+    options: {
+      transition: 'f7-parallax',
+    },
+  },
+  {
+    path: '/dTrabajadores/:nombre',
+    componentUrl: './pages/contratadores/detalleTrabajadores.html',
     options: {
       transition: 'f7-parallax',
     },

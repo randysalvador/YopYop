@@ -16,43 +16,17 @@
     </div>
 
     <div class="page-content">
+     
       {{#each oficio}}
-      <div class="card card-expandable">
-        <div class="card-content">
-          <div class="bg-color-blue" style="height: 300px">
-            <div class="card-header text-color-white display-block">
-              {{nombre}}
-              <br>
-              <small style="opacity: 0.7">El contrato ideal</small>
-            </div>
-
-            <a href="#" class="link card-close card-opened-fade-in color-white"
-              style="position: absolute; right: 15px; top: 15px">
-              <i class="icon f7-icons">multiply_circle_fill</i>
-            </a>
-          </div>
-
-          <div class="card-content-padding">
-
-            <!---->
-
-            <div class="list links-list">
-              <ul>
-               
-                <li><a href="#">Lista 1</a></li>
-                <li><a href="#">Lista 1</a></li>
-                <li><a href="#">Lista 1</a></li>
-                <li><a href="#">Lista 1</a></li>
-                <li><a href="#">Lista 1</a></li>
-                
-              </ul>
-            </div>
-
-            <!---->
-
-          </div>
-
+      <div class="card demo-card-header-pic">
+        <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">{{nombre}}</div>
+        <div class="card-content card-content-padding">
+          <!--<p class="date">Posted on January 21, 2015</p>-->
+          <p>El contrato ideal </p>
         </div>
+        <div class="container">
+        <div class="card-footer"><a href="/dTrabajadores/{{nombre}}">Detalles</a></div>
+      </div>
       </div>
       {{/each}}
     </div>

@@ -3,36 +3,40 @@
     <div class="navbar">
       <div class="navbar-bg"></div>
       <div class="navbar-inner sliding">
-
         <div class="left">
-          <a href="#" class="button popup-open" data-popup=".popup-about">
-            <i class="icon f7-icons " style="color:blue;">line_horizontal_3</i>
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
           </a>
-
         </div>
+        <div class="title">{{$route.params.nombre}}</div>
 
-        <div class="title">Oficios disponibles</div>
       </div>
     </div>
-
     <div class="page-content">
-     
-      {{#each oficio}}
-      <div class="card demo-card-header-pic">
-        <div style="background-image:url(https://cdn.framework7.io/placeholder/nature-1000x600-3.jpg)" class="card-header align-items-flex-end">{{nombre}}</div>
-        <div class="card-content card-content-padding">
-          <!--<p class="date">Posted on January 21, 2015</p>-->
-          <p>El contrato ideal </p>
-        </div>
-        <div class="container">
-        <div class="card-footer"><a href="/dTrabajadores/{{nombre}}">Detalles</a></div>
-      </div>
-      </div>
-      {{/each}}
-    </div>
 
+    
+      <!---->
+
+      <div class="list">
+        <ul>
+          {{#each users}}
+          <li>
+            <a href="#" class="item-link item-content">
+              <div class="item-inner">
+                {{#js_if "this.oficio === 'Carpintero'"}}
+                <div class="item-title">{{nombre}}</div>
+                {{/js_if}}
+              </div>
+            </a>
+          </li>
+         {{/each}}
+        </ul>
+      </div>
+
+    </div>
   </div>
 </template>
+
 <script>
   return {
     data: function () {
@@ -74,7 +78,8 @@
               console.log(doc.id, " => ", doc.data());
               _Users.push({
                 id: doc.id,
-                nombre: doc.data().nombre
+                nombre: doc.data().nombre,
+                oficio: doc.data().oficio
               })
               self.$setState({
                 users: _Users

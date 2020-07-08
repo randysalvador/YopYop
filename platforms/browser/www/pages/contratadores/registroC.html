@@ -1,0 +1,149 @@
+<template>
+    <div class="page">
+      <div class="navbar">
+        <div class="navbar-bg"></div>
+        <div class="navbar-inner sliding">
+          <div class="left">
+            <a href="/login/" class="link back" >
+              <i class="icon icon-back"></i>
+            </a>
+          </div>
+          <div class="title" >Registrate para Contratar</div>    
+        </div>
+      </div>
+      <div class="page-content">
+        <div class="block block-title-medium">Contratos confiables</div>
+        <form class="list no-hairlines-md" id="registro">
+          <ul>
+            <li class="item-content item-input">
+              <div class="item-media">
+               <i class="icon f7-icons">person_alt_circle</i> <!--  -->
+             </div>                
+             <div class="item-inner">
+              <div class="item-title item-label">Nombre</div>
+              <div class="item-input-wrap">
+                <input type="text" placeholder="Nombre" name="nombre">
+                <span class="input-clear-button"></span>
+              </div>
+            </div>
+          </li>     
+          <li class="item-content item-input">
+            <div class="item-media">
+             <i class="icon f7-icons">bold_italic_underline</i> <!--  -->
+           </div>                
+           <div class="item-inner">
+            <div class="item-title item-label">Apellido</div>
+            <div class="item-input-wrap">
+              <input type="text" placeholder="Apellido" name="apellido">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+        </li>   
+        <li class="item-content item-input">
+          <div class="item-media">
+           <i class="icon f7-icons">phone_circle</i> <!--  -->
+         </div>                
+         <div class="item-inner">
+          <div class="item-title item-label">Teléfono</div>
+          <div class="item-input-wrap">
+            <input type="number" placeholder="Teléfono" name="telefono">
+            <span class="input-clear-button"></span>
+          </div>
+        </div>
+        
+      </li>           
+          <li class="item-content item-input">
+            <div class="item-media">
+             <i class="icon f7-icons">envelope</i> <!--  -->
+           </div>                
+           <div class="item-inner">
+            <div class="item-title item-label">Email</div>
+            <div class="item-input-wrap">
+              <input type="text" placeholder="Email" name="email">
+              <span class="input-clear-button"></span>
+            </div>
+          </div>
+          
+        </li>
+        <li class="item-content item-input">
+          <div class="item-media">
+           <i class="icon f7-icons">bold_italic_underline</i> <!--  -->
+         </div> 
+         <div class="item-inner">
+          <div class="item-title item-label">Contraseña</div>
+          <div class="item-input-wrap">
+            <input type="password" placeholder="Contraseña" name="password">
+            <span class="input-clear-button" ></span>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </form>    
+  <a href="#" class="button" @click="registro">Registrarme</a>
+  </div>
+  </div>
+  </template>
+  
+  <script>
+    return {
+      methods:{
+        registro: function() {
+                  var app = this.$app;
+                  var alldata = app.form.convertToData('#registro')
+                  var dialog = app.dialog.preloader("Creando cuenta", "multi");
+  
+                  //consulta para crear el usuario y guardar en la base de datos su informacion
+                  firebase
+                      .auth(conexion1)
+                      .createUserWithEmailAndPassword(alldata.email, alldata.password)
+                      .then(data => {
+  
+                          setTimeout(() => {
+                              dialog.setTitle("Ultimos ajustes");
+                          }, 1000);
+                          db1.collection("users")
+                              .doc(data.user.uid)
+                              .set({  
+                                  nombre: alldata.nombre,
+                                  apellido: alldata.apellido,
+                                  telefono: alldata.telefono,
+                                  email: alldata.email,
+                                  userUid: data.user.uid,
+                                  password: alldata.password,
+                                  tipo: "contratador"
+                              })
+                              .then(() => {
+                                  setTimeout(() => {
+                                      dialog.setTitle("Finalizando");
+                                  }, 3000);
+                                  setTimeout(() => {
+                                      dialog.close();
+                                      mainView.router.navigate('/homeC/',{
+                              clearPreviousHistory: true
+                            })
+                                      //app.views.main.router.back();
+                                      app.dialog.alert(
+                                          "Su cuenta ha sido creada con exito",
+                                          "Bienvenido"
+                                      );
+                                  }, 4000);
+                              })
+                              .catch(error => {});
+                      })
+                      .catch(function(error) {
+                          // Handle Errors here.
+                          app.dialog.close();
+                          app.dialog.alert('Verifique que todos los campos este correctamente rellenados', 'Error de registro')
+                          var errorCode = error.code;
+                          var errorMessage = error.message;
+                          // ...
+                          console.log(errorMessage);
+                      });
+  
+  
+              }
+              
+     },
+   };
+  </script>
+  

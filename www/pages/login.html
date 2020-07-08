@@ -1,0 +1,131 @@
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner sliding">
+        
+        
+  
+      </div>
+    </div>
+    <div class="page-content">
+      
+     
+      <div class="view">
+        <div class="page">
+          <div class="page-content login-screen-content">
+          <!-- <div class="item-title">Modo Oscuro</div>-->
+        <!--<div class="item-after">
+          <label class="toggle toggle-init">
+            <input type="checkbox" name="toggle" value="yes"><i class="toggle-icon"></i>
+          </label>-->
+            <div class="login-screen-title">.:YopYop:.</div>
+            <form id="login" class="ignore-store-data">
+              <div class="list">
+                <ul>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label" class="toggle toggle-init color-black">Usuario</div>
+                      <div class="item-input-wrap">
+                        <input type="text" name="username" placeholder="Tu usuario" >
+                      </div>
+                    </div>
+                  </li>
+                  <li class="item-content item-input">
+                    <div class="item-inner">
+                      <div class="item-title item-label">Contraseña</div>
+                      <div class="item-input-wrap">
+                        <input type="password" name="password" placeholder="Tu contraseña" >
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <div class="list">
+                <ul>
+                  <li><a class="item-link list-button" @click="inicio">Entrar</a></li>
+                </ul>
+                 <div class="block-footer">
+                  <p></p>
+                  <p><a class="link login-screen-close" href="/tipo/">¿No tienes una cuenta?</a></p>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </template>
+  
+  <script>
+    return {
+      data: function () {
+        return {
+
+        }
+      },
+      methods:{
+        inicio: function() {
+          var app = this.$app;
+          app.dialog.preloader('Iniciando Sesión')
+          var datos = app.form.convertToData('#login')
+          var username=datos.username;
+          var password=datos.password;
+          db1.collection("users").where("email", "==", username).where("password", "==", password)
+                  .get()
+                  .then(function(querySnapshot) {
+                      querySnapshot.forEach(function(doc) {
+                        
+                          
+                          console.log(doc.id, " => ", doc.data());
+                          
+                          if(doc.data().tipo=="admin"  ){
+                            localStorage.setItem("login", true);
+                            app.dialog.close();
+                           mainView.router.navigate('/home/',{
+                              clearPreviousHistory: true
+                            })
+                        }else if(doc.data().tipo=="contratador" ){
+                          localStorage.setItem("login", true);
+                          app.dialog.close();
+                            mainView.router.navigate('/homeC/',{
+                              clearPreviousHistory: true
+                            })
+                        }
+                        else if(doc.data().tipo=="trabajador" ){
+                          localStorage.setItem("login", true);
+                          app.dialog.close();
+                            mainView.router.navigate('/homeT/',{
+                              clearPreviousHistory: true
+                            })
+                        }
+                        app.userUid=doc.id
+                      });
+                    })
+
+
+                  .catch(function(error) {
+                    app.dialog.close();
+                    app.dialog.alert('Verifique sus datos o verifique si tiene acceso a internet', 'Inicio de sesión fallido')
+                   // console.log("Error getting documents: ", error);
+                    var errorCode = error.code;
+                    var errorMessage = error.message;
+                    console.log(errorCode)
+                          // ...
+                          console.log(errorMessage);
+                        });
+
+                }
+              },
+              on: {
+                pageInit: function () {
+
+
+
+
+        },
+      },
+    };
+  </script>

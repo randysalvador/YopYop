@@ -1,0 +1,115 @@
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-bg"></div>
+      <div class="navbar-inner sliding">
+
+        <div class="left">
+          <a href="#" class="button popup-open" data-popup=".popup-about">
+            <i class="icon f7-icons " style="color:blue;">line_horizontal_3</i>
+          </a>
+
+        </div>
+
+        <div class="title">Oficios disponibles</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+      {{#each oficio}}
+      <div class="card card-expandable">
+        <div class="card-content">
+          <div class="bg-color-blue" style="height: 300px">
+            <div class="card-header text-color-white display-block">
+              {{nombre}}
+              <br>
+              <small style="opacity: 0.7">El contrato ideal</small>
+            </div>
+
+            <a href="#" class="link card-close card-opened-fade-in color-white"
+              style="position: absolute; right: 15px; top: 15px">
+              <i class="icon f7-icons">multiply_circle_fill</i>
+            </a>
+          </div>
+
+          <div class="card-content-padding">
+
+            <!---->
+
+            <div class="list links-list">
+              <ul>
+               
+                <li><a href="#">Lista 1</a></li>
+                <li><a href="#">Lista 1</a></li>
+                <li><a href="#">Lista 1</a></li>
+                <li><a href="#">Lista 1</a></li>
+                <li><a href="#">Lista 1</a></li>
+                
+              </ul>
+            </div>
+
+            <!---->
+
+          </div>
+
+        </div>
+      </div>
+      {{/each}}
+    </div>
+
+  </div>
+</template>
+<script>
+  return {
+    data: function () {
+      return {
+        users: [],
+        oficio: []
+      }
+    },
+    methods: {
+
+    },
+    on: {
+      pageInit: function () {
+        var self = this;
+        let _Oficio = [];
+        let _Users = [];
+
+        db1.collection("oficio")
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              // doc.data() is never undefined for query doc snapshots
+              console.log(doc.id, " => ", doc.data());
+              _Oficio.push({
+                id: doc.id,
+                nombre: doc.data().nombre
+              })
+              self.$setState({
+                oficio: _Oficio
+              })
+            });
+          });
+
+        db1.collection("users")
+          .get()
+          .then(function (querySnapshot) {
+            querySnapshot.forEach(function (doc) {
+              // doc.data() is never undefined for query doc snapshots
+              console.log(doc.id, " => ", doc.data());
+              _Users.push({
+                id: doc.id,
+                nombre: doc.data().nombre
+              })
+              self.$setState({
+                users: _Users
+              })
+            });
+          });
+
+      }
+    }
+
+  };
+</script>
